@@ -50,7 +50,8 @@
 		'name',
 		'author',
 		'rating',
-		'downloads'
+		'downloads',
+		'enabled'
 	];
 
 	const contextItems: ModContextItem<ProfileMod>[] = [
