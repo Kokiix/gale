@@ -35,6 +35,7 @@ pub enum SortBy {
     InstallDate,
     Custom,
     DiskSpace,
+    Enabled,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -172,6 +173,7 @@ impl Queryable for BorrowedMod<'_> {
                 SortBy::DiskSpace => self.version.file_size.cmp(&other.version.file_size),
                 SortBy::InstallDate => Ordering::Equal,
                 SortBy::Custom => Ordering::Equal,
+                SortBy::Enabled => Ordering::Equal,
             };
 
             match args.sort_order {

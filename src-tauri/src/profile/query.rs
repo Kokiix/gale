@@ -96,6 +96,7 @@ impl Queryable for QueryableProfileMod<'_> {
         let overridden = match args.sort_by {
             SortBy::InstallDate => Some(self.install_time.cmp(&other.install_time)),
             SortBy::Custom => Some(self.index.cmp(&other.index)),
+            SortBy::Enabled => Some(self.enabled.cmp(&other.enabled)),
             _ => None,
         };
 
