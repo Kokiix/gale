@@ -387,6 +387,7 @@ export enum Backends {
 
 export type GamePrefs = {
 	dirOverride: string | null;
+	executableName: string | null;
 	customArgs: string;
 	launchMode: LaunchMode;
 	platform: Platform | null;

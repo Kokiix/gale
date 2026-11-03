@@ -45,6 +45,7 @@
 		gamePrefs = prefs?.gamePrefs.get(gameSlug) ?? {
 			launchMode: { type: 'launcher' },
 			dirOverride: null,
+			executableName: null,
 			customArgs: '',
 			showSteamLaunchOptions: false,
 			backend: Backends.All,
@@ -202,6 +203,8 @@
 			platform={shownPlatform}
 			value={gamePrefs.launchMode}
 			set={set((value) => (gamePrefs!.launchMode = value))}
+			executableName={gamePrefs.executableName}
+			setExecutableName={set((value) => (gamePrefs!.executableName = value))}
 		/>
 
 		{#if gamePrefs.launchMode.type === 'launcher' && shownPlatform === 'steam'}
