@@ -104,7 +104,7 @@ impl ManagedGame {
         game_dir: &Path,
         prefs: &Prefs,
     ) -> Result<(LaunchMode, Command)> {
-        let (launch_mode, mut platform, game_custom_args) =
+        let (launch_mode, mut platform, game_custom_args, executable_name) =
             prefs.game_prefs.get(&*self.game.slug).map_or_else(
                 || {
                     info!("game prefs not set, using default settings");
@@ -115,6 +115,7 @@ impl ManagedGame {
                         prefs.launch_mode.clone(),
                         prefs.platform,
                         prefs.custom_args.as_str(),
+                        prefs.executable_name.as_deref(),
                     )
                 },
             );
@@ -130,7 +131,7 @@ impl ManagedGame {
             }
             _ => None,
         }
-        .unwrap_or_else(|| find_executable(game_dir).map(Command::new))?;
+        .unwrap_or_else(|| find_executable(game_dir, executable_name).map(Command::new))?;
 
         let profile = self.active_profile();
 
@@ -296,7 +297,7 @@ const IGNORED_EXES: &[&str] = &[
     "UnityCrashHandler64.exe",
 ];
 
-fn find_executable(game_dir: &Path) -> Result<PathBuf> {
+fn find_executable(game_dir: &Path, executable_name: Option<&str>) -> Result<PathBuf> {
     WalkDir::new(game_dir)
         .into_iter()
         .filter_map(Result::ok)
@@ -313,7 +314,9 @@ fn find_executable(game_dir: &Path) -> Result<PathBuf> {
                 matches!(extension, Some("exe" | "sh"))
             };
 
-            has_correct_extension && !IGNORED_EXES.contains(&&*file_name_str)
+            let is_requested = executable_name.is_none_or(|name| file_name_str == name);
+
+            has_correct_extension && is_requested && !IGNORED_EXES.contains(&&*file_name_str)
         })
         .map(walkdir::DirEntry::into_path)
         .ok_or_eyre("game executable not found")

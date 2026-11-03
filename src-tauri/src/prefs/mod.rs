@@ -225,6 +225,7 @@ impl From<Backend> for Backends {
 #[serde(default, rename_all = "camelCase")]
 pub struct GamePrefs {
     pub dir_override: Option<PathBuf>,
+    pub executable_name: Option<String>,
     // Older versions used to have a list of arguments instead of one string
     // this is hard to migrate in SQL due to the nested JSON structure, so we
     // support both formats in deserialization and convert to the new format

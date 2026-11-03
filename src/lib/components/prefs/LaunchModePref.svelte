@@ -13,9 +13,17 @@
 		platform: string;
 		value: LaunchMode;
 		set: (value: LaunchMode) => Promise<void>;
+		executableName: string | null;
+		setExecutableName: (value: string | null) => Promise<void>;
 	};
 
-	let { platform, value = $bindable(), set }: Props = $props();
+	let {
+		platform,
+		value = $bindable(),
+		set,
+		executableName = $bindable(),
+		setExecutableName
+	}: Props = $props();
 
 	let instances = $derived(value.content?.instances ?? 1);
 	let intervalSecs = $derived(value.content?.intervalSecs ?? 10);
@@ -104,6 +112,28 @@
 		onchange={(value) => {
 			intervalSecs = parseInt(value);
 			submit();
+		}}
+	/>
+</div>
+
+<div class="flex items-center">
+	<Label>Executable name</Label>
+
+	<Info>
+		<p>
+			Launch this executable, instead of an automatically detected one. Only available in
+			<b>Direct</b> mode.
+		</p>
+	</Info>
+
+	<InputField
+		disabled={value.type === 'launcher'}
+		placeholder="Automatically detect"
+		value={executableName ?? ''}
+		onchange={(newValue) => {
+			const name = newValue.trim();
+			executableName = name || null;
+			setExecutableName(executableName);
 		}}
 	/>
 </div>
