@@ -170,7 +170,8 @@ export type SortBy =
 	| 'rating'
 	| 'installDate'
 	| 'custom'
-	| 'diskSpace';
+	| 'diskSpace'
+	| 'enabled';
 
 export type SortOrder = 'ascending' | 'descending';
 
@@ -429,12 +430,12 @@ export type Folder = {
 
 export type ListItem =
 	| {
-			type: 'mod';
-			mod: ProfileMod;
-	  }
+		type: 'mod';
+		mod: ProfileMod;
+	}
 	| {
-			type: 'folder';
-			folder: Folder;
-	  };
+		type: 'folder';
+		folder: Folder;
+	};
 
 export type RgbaColor = [number, number, number, number];
