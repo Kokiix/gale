@@ -12,6 +12,7 @@
 
 	import { onMount, untrack } from 'svelte';
 	import { listen, type UnlistenFn } from '@tauri-apps/api/event';
+	import { open } from '@tauri-apps/plugin-shell';
 	import ModListItem from '$lib/components/mod-list/ModListItem.svelte';
 	import ProfileLockedBanner from '$lib/components/mod-list/ProfileLockedBanner.svelte';
 	import ModListFilters from '$lib/components/mod-list/ModListFilters.svelte';
@@ -119,6 +120,8 @@
 	function onModClicked(evt: MouseEvent, mod: Mod) {
 		if (evt.ctrlKey) {
 			installLatest(mod);
+		} else if (evt.altKey && mod.websiteUrl) {
+			open(mod.websiteUrl);
 		} else if (selectedMod && itemUuid(selectedMod) === mod.uuid) {
 			selectedMod = null;
 		} else {
